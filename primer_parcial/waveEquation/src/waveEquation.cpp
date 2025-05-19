@@ -1,7 +1,7 @@
 /**
  * @file     laplaceEquation.cpp
  * @brief    Implementación de funciones para resolver la ecuación de onda y visualizar resultados con Gnuplot.
- * @author   -
+ * @author   Isabel Nieto y Camilo Huertas
  * @date     2025-04-27
  * @version  1.0.0
  * @license  MIT
@@ -11,7 +11,25 @@
 // Lee tiempo desde consola
 double solicitarTiempo() {
     double t;
-    cout << "Introduce el tiempo t (en segundos): ";
+    cout << "\n╔═══════════════════════════════════════════════════╗" << endl;
+    cout << "║      RESOLVER LA ECUACIÓN DE ONDA (1D)              ║" << endl;
+    cout << "╠═════════════════════════════════════════════════════╣" << endl;
+    cout << "║  ∂²y     ∂²y                                        ║" << endl;
+    cout << "║  ──── = 9────        0 < x < 4, t > 0               ║" << endl;
+    cout << "║  ∂t²     ∂x²                                        ║" << endl;
+    cout << "╠═════════════════════════════════════════════════════╣" << endl;
+    cout << "║  y(0,t) = y(4,t) = 0         para t ≥ 0             ║" << endl;
+    cout << "║                                                     ║" << endl;
+    cout << "║  y(x,0) = 2·sen(πx)          para 0 ≤ x ≤ 4         ║" << endl;
+    cout << "║                                                     ║" << endl;
+    cout << "║  ∂y                                                 ║" << endl;
+    cout << "║  ──(x,0) = 0                                        ║" << endl;
+    cout << "║  ∂t                                                 ║" << endl;
+    cout << "╠═════════════════════════════════════════════════════╣" << endl;
+    cout << "║  Este código resuelve numéricamente la ecuación     ║" << endl;
+    cout << "║  utilizando el método de diferencias finitas        ║" << endl;
+    cout << "╚═════════════════════════════════════════════════════╝" << endl;
+    cout << " >> Introduce el tiempo t (en segundos): ";
     cin >> t;
     return t;
 }
