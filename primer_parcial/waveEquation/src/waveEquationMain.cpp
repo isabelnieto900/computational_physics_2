@@ -1,13 +1,7 @@
 #include "../include/waveEquation.h"
 
-// Prototipos
-
 int main() {
-    // Parámetros globales
-    //const double c = 3.0;         // velocidad de la onda (c = 3)
-    const double L = 4.0;         // longitud del dominio en x
-    //const int Na = 100;           // malla analítica
-    const int Nn = 50;           // malla numérica
+    //tiempo máximo fijo para animación
     // 1) Solicitar tiempo
     double t = solicitarTiempo();
 
@@ -19,7 +13,18 @@ int main() {
     guardarDatos(t, y_num);
 
     // 4) Graficar con Gnuplot
-    graficarDatos(t);
+    graficarDatos();
+    
+    int Nt = 50; // número de fotogramas
+
+    // Generar archivo con todos los tiempos
+    guardarDatosgifA(Nt);
+    guardarDatosgifN(Nt);
+
+    // Crear GIF animado 2D
+    generarGif2DA("onda_anim.dat", "onda_evolucion.gif", "animacion2D.gnu", t_max);
+    generarGif2DN("onda_animN.dat", "onda_evolucionN.gif", "animacion2DN.gnu", t_max);
+    
 
     return 0;
 }

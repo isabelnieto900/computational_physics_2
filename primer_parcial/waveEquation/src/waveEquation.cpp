@@ -7,10 +7,6 @@
  * @license  MIT
  */
 #include "../include/waveEquation.h"
-const double c = 3.0;         // velocidad de la onda (c = 3)
-const double L = 4.0;         // longitud del dominio en x
-const int Na = 100;           // malla analítica
-const int Nn = 50;           // malla numérica
 
 // Lee tiempo desde consola
 double solicitarTiempo() {
@@ -73,6 +69,101 @@ void guardarDatos(double t, const vector<double>& y_num) {
     }
     dataN.close();
 }
+void graficarDatos() {
+    string opcion;
+    cin.ignore();
+    cout << "\n¿Con qué desea visualizar la gráfica? [gnuplot/python]: ";
+    getline(cin, opcion); // sin 
 
-// Genera script y lo ejecuta
-// system("rm script.gnuplot dataA.dat dataN.dat");
+    if (opcion == "gnuplot") {
+        system("gnuplot -persist scripts/plot_wave.gp");
+    } else if (opcion == "python") {
+        system("python3 scripts/plot_wave.py");
+    } else {
+        cout << "❌ Opción no reconocida. Escriba 'gnuplot' o 'python'.\n";
+    }
+}
+int contarLineas(const string& file) {
+    ifstream in(file);
+    int n = 0;
+    string line;
+    while (getline(in, line)) ++n;
+    return n;
+}
+void guardarDatosgifA(int Nt) {
+    ofstream out("onda_anim.dat");
+    for (int j = 0; j <= Nt; ++j) {
+        double t = t_max * j / Nt;
+        for (int i = 0; i <= Na; ++i) {
+            double x = L * i / Na;
+            out << t << "\t" << x << "\t" << analytic(x, t) << "\n";
+        }
+    }
+    out.close();
+}
+void guardarDatosgifN(int Nt) {
+    ofstream out("onda_animN.dat");
+    vector<double> y_num;
+    for (int j = 0; j <= Nt; ++j) {
+        double t = t_max * j / Nt;
+        solve_fdm(Nn, L, t, y_num);
+        for (int i = 0; i <= Nn; ++i) {
+            double x = L * i / Nn;
+            out << t << "\t" << x << "\t" << y_num[i] << "\n";
+        }
+    }
+    out.close();
+}
+void generarGif2DA(const string& dataFile, const string& gifName, const string& scriptName, double t_max) {
+    int nLines = contarLineas(dataFile);
+    int linesPerFrame = Na + 1;
+    int frames = nLines / linesPerFrame;
+
+    ofstream script(scriptName);
+    script << "set terminal gif animate delay 10 size 800,600\n";
+    script << "set output '" << gifName << "'\n";
+    script << "set xlabel 'x'\n";
+    script << "set ylabel 'y(x,t)'\n";
+    script << "set xrange [0:" << L << "]\n";
+    script << "set yrange [-2.5:2.5]\n";
+    script << "set grid\n";
+
+    for (int i = 0; i < frames; ++i) {
+        int start = i * linesPerFrame;
+        int end = start + linesPerFrame - 1;
+        double t = i * t_max / frames;
+        script << "  plot '" << dataFile << "' every ::" << start << "::" << end
+               << " using 2:3 with lines lc rgb 'purple' title sprintf('t=%.2f'," << t << ")\n";
+    }
+
+    script << "unset output\n";
+    script.close();
+
+    system((string("gnuplot ") + scriptName).c_str());
+}
+void generarGif2DN(const string& dataFile, const string& gifName, const string& scriptName, double t_max) {
+    int nLines = contarLineas(dataFile);
+    int linesPerFrame = Nn + 1;
+    int frames = nLines / linesPerFrame;
+
+    ofstream script(scriptName);
+    script << "set terminal gif animate delay 10 size 800,600\n";
+    script << "set output '" << gifName << "'\n";
+    script << "set xlabel 'x'\n";
+    script << "set ylabel 'y(x,t)'\n";
+    script << "set xrange [0:" << L << "]\n";
+    script << "set yrange [-2.5:2.5]\n";
+    script << "set grid\n";
+
+    for (int i = 0; i < frames; ++i) {
+        int start = i * linesPerFrame;
+        int end = start + linesPerFrame - 1;
+        double t = i * t_max / frames;
+        script << "plot '" << dataFile << "' every ::" << start << "::" << end
+               << " using 2:3 with lines lc rgb 'purple' title sprintf('t=%.2f'," << t << ")\n";
+    }
+    script << "unset output\n";
+    script.close();
+
+    system((string("gnuplot ") + scriptName).c_str());
+}
