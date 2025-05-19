@@ -29,16 +29,18 @@ waveEquation/
 
 ---
 
-## 📈 ¿Qué resuelve este código?
+## 📈 Problema que resuelve este código
 
-Resuelve la ecuación de onda 1D:
+El programa resuelve la siguiente **ecuación de onda** con condiciones iniciales y de frontera:
+
 \[
-\frac{\partial^2 y}{\partial t^2} = c^2 \frac{\partial^2 y}{\partial x^2}
+\begin{cases}
+\displaystyle \frac{\partial^2 y}{\partial t^2} = 9\, \frac{\partial^2 y}{\partial x^2} & \quad 0 < x < 4,\; t > 0 \\[2ex]
+y(0, t) = y(4, t) = 0 & \quad \text{para } t \geq 0 \\[2ex]
+y(x, 0) = 2 \sin(\pi x) & \quad \text{para } 0 \leq x \leq 4 \\[2ex]
+\displaystyle \frac{\partial y}{\partial t}(x, 0) = 0 & \quad \text{para } 0 \leq x \leq 4
+\end{cases}
 \]
-con condiciones de frontera y condiciones iniciales:
-- \( y(0, t) = y(L, t) = 0 \)
-- \( y(x, 0) = 2 \sin(\pi x) \)
-- \( \frac{\partial y}{\partial t}(x, 0) = 0 \)
 
 ---
 
@@ -151,6 +153,3 @@ pip install matplotlib numpy
 
 ---
 
-## 📬 Comentarios
-
-Si tienes dudas o sugerencias, ¡no dudes en preguntar o mejorar este proyecto!
