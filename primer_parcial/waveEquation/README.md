@@ -18,6 +18,7 @@ waveEquation/
 │
 ├── scripts/
 │   └── plot_wave.py           # Script Python para graficar resultados
+|   └── plot_wave.gp           # Script gnuplot para graficar resultados
 │
 ├── Makefile                   # Compilación y automatización de tareas
 ├── dataA.dat                  # (Se genera) Datos de la solución analítica
